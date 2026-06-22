@@ -26,7 +26,7 @@ let logger = require('./logger');
 let utils = require('./utils');
 
 const shQuote = s =>  {
-    s = s.replace(/"/g, "")
+    s = String(s).replace(/"/g, "")
     return `"${s}"`;
 }
 
