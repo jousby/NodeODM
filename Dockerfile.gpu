@@ -1,4 +1,4 @@
-ARG FROM_REPO=opendronemap/odm:gpu
+ARG FROM_REPO=opendronemap/odm:3.6.2-gpu
 FROM ${FROM_REPO}
 MAINTAINER Piero Toffanin <pt@masseranolabs.com>
 
