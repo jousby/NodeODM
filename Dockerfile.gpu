@@ -19,13 +19,15 @@ RUN bash install_deps.sh && \
     ln -s /code/SuperBuild/install/bin/untwine /usr/bin/untwine && \
     ln -s /code/SuperBuild/install/bin/entwine /usr/bin/entwine && \
     ln -s /code/SuperBuild/install/bin/pdal /usr/bin/pdal && \
-    ln -s /var/www/node.sh /usr/bin/node && \
-    mkdir -p tmp && node index.js --powercycle
+    ln -s /var/www/node.sh /usr/bin/node
 
 RUN useradd -m -d "/home/odm" -s /bin/bash odm && \
     chown -R odm:odm /var/www && \
     chown -R odm:odm /code
 
 USER odm
+
+# Smoke test as the runtime user, with the command ENTRYPOINT runs.
+RUN mkdir -p tmp && /usr/bin/node /var/www/index.js --powercycle
 
 ENTRYPOINT ["/usr/bin/node", "/var/www/index.js"]
