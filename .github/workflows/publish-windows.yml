@@ -11,15 +11,21 @@ permissions:
   contents: write
   id-token: write
 
+# Let a tagged release build run to completion instead of being superseded by a
+# later push to the same ref. Different refs (master vs. a tag) never contend.
+concurrency:
+  group: publish-windows-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: windows-latest
     environment: azuresigning
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
     - name: Setup NodeJS
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: '14'
     - name: Setup Env
@@ -43,10 +49,12 @@ jobs:
         npm run winbundle -- --signtool-path "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe" --azure-signing-metadata "%RUNNER_TEMP%\metadata.json"
       shell: cmd
     - name: Upload Bundle File
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: Bundle
         path: dist\*.zip
+        retention-days: 3
     - name: Upload Bundle to Release
       uses: svenstaro/upload-release-action@v2
       if: startsWith(github.ref, 'refs/tags/')
