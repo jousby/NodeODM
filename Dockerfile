@@ -1,5 +1,5 @@
 FROM opendronemap/odm:3.6.2
-MAINTAINER Piero Toffanin <pt@masseranolabs.com>
+LABEL org.opencontainers.image.authors="OpenDroneMap Developers <maintainers@opendronemap.org>"
 
 EXPOSE 3000
 
